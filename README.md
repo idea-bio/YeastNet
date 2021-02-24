@@ -13,11 +13,9 @@ YeastNet works best using a conda environment and has been tested on a win-64 sy
 
 Linux: ```conda env create -f environment.yml```
 
-PC: ```conda env create -f environmentPC.yml```
-
 2) Activate the new conda environment
 
-```conda activate yeast-net```
+```conda activate ynet```
 
 3) Download the model parameters and Images
 
@@ -46,3 +44,9 @@ You can download a set of YeastNet2 parameters at:
 <https://drive.google.com/open?id=10nGfO99JcNNtZXyWDtaQN_HmYaPQ6ga9>
 
 Export and place the YeastNet2 Model and the Images folder into the main directory.
+
+## Ground Truth Datasets
+
+Segmentation Masks created for this work are available at:
+
+https://drive.google.com/file/d/1DIFoyRt_uRiFw6DXfoG6coSAayfGwD_M/view?usp=sharing
