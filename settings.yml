@@ -1,32 +1,32 @@
 exp_info:
-  TB_comment: 'no_og_data'
+  TB_comment: "no_og_data"
 
 data:
   DSDataset_size: 150
   YITDataset1_size: 60
   YITDataset3_size: 20
   loss_param:
-    - '10' # w0
-    - '5'  # sigma
+    - "10" # w0
+    - "5" # sigma
   trainingSets:
     - DSDataset
-#    - DSDataset2
-#    - YITDataset1
-  testingSets: 
+    - YITDataset1
+    - YITDataset3
+  testingSets:
     - DSDataset
-#    - YITDataset3
-#    - DSDataset2
+    - YITDataset1
+    - YITDataset3
 
 train_param:
   k: 5
-  toResume: 'False'
+  toResume: "False"
   normtype: 3
-  allDatasets: 'True'
+  allDatasets: "True"
   end: 1000
   learning_rate: 0.01
   momentum: 0.9
-  crop_size: 800
-  no_og_data: True
+  crop_size: 256
+  no_og_data: False
   random_flip: True
   random_rotate: True
   random_crop: True
@@ -34,4 +34,4 @@ train_param:
 
 model:
   folderpath: ./SavedModels/
-  modelname: test.pt
+  modelname: ynet3.pt

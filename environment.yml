@@ -2,17 +2,19 @@
 name: ynet
 channels:
   - pytorch
+  - bioconda
+  - conda-forge
   - defaults
 dependencies:
-  - cudatoolkit=10.2
-  - pytorch=1.5
+  - cudatoolkit=11.0
+  - pytorch=1.7.1
   - imageio
   - ipython
   - matplotlib
   - numpy
   - opencv
   - flake8
-  - python >=3.7
+  - python=3.8.5
   - scipy
   - tensorboard
   - torchvision
