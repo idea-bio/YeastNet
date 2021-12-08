@@ -3,6 +3,7 @@ import pdb
 from Utils.makeTimelapse import makeTimelapse
 from Utils.TestPerformance import makeResultsCSV, getMeanAccuracy
 from Utils.plotFLTrack import plotFlTrack 
+import os.path
 import pickle
 
 ## Parse Arguments
@@ -15,12 +16,30 @@ args = parser.parse_args()
 datasetfolder = args.datasetfolder
 makePlots = args.make_plot
 saveExp = args.save_experiment
-model_path = './Published/YNModelParams.pt'
+modal_name='YNModelParams.pt'
+old_path = './Published/'
+model_dir = r'../model/'
+if (os.path.isdir(model_dir)):
+    model_path =  model_dir+modal_name
+elif(os.path.isdir(old_path)):
+    model_path= old_path+ model_dir
 
+if not os.path.isfile(model_path):
+    print(r'file model existing')
+    exit -100
 
-tl = makeTimelapse('./Images/' + datasetfolder + '/' , model_path, saveExp)
+if os.path.isdir(datasetfolder):
+    if not str.endswith(datasetfolder, '/') and not str.endswith(datasetfolder,'\\'):
+        datasetfolder = datasetfolder+'/'
+else:
+    datasetfolder ='./Images/' + datasetfolder + '/'
+if not os.path.isdir(datasetfolder):
+    print(r'could\'t find ds folder at: ' + datasetfolder)
+    exit -101
+tl = makeTimelapse(datasetfolder  , model_path, saveExp)
 #tl = makeTimelapse('./Published/Images/Z2/', model_path, False)
-
 
 if makePlots:
     plotFlTrack(tl)
+
+print('done')
