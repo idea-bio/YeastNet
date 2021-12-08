@@ -5,6 +5,7 @@ import imageio
 import pickle
 import argparse
 import os
+import cv2
 #from numpngw import write_png
 
 from ynetmodel.detect import infer
@@ -43,8 +44,10 @@ def makeTimelapse(imagedir, model_path, saveExp, saveImage=True, saveLabels=True
        # im2 = (65535 * (im - im.min()) / im.ptp()).astype(np.uint16)
         #write_png(tl.image_dir + 'Results/' + fn + 'LabelsLightPNG.png', im2)
         if saveLabels:
+            path =tl.image_dir + 'Results/' + fn + 'Labels.tiff'
             im = tl.labels[idx].astype(np.uint16)
-            imageio.imwrite(tl.image_dir + 'Results/' + fn + 'Labels.tiff', im)#to support more than 8bpp pixels
+            cv2.imwrite(path, im)
+            #imageio.imwrite(im, im)#to support more than 8bpp pixels
         if saveOverlay:
             imageio.imwrite(tl.image_dir + 'Results/' + fn + 'Overlay.png', (tl.contouredImages[idx] * 255).astype('uint8'))
         if saveImage:

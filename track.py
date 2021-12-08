@@ -12,9 +12,9 @@ parser.add_argument("-f","--datasetfolder", type=str, help="Input string of data
 parser.add_argument("-p","--make_plot", type=bool, help="Boolean variable to choose whether fluorescence plots are desired", default=False)
 parser.add_argument("-s","--save_experiment", type=bool, help="Boolean variable to choose whether to save a file containing all TImelapse info", default=False)
 
-parser.add_argument("-l","--save_labels", type=bool, help="Boolean variable to choose whether to save a file containing all TImelapse info", default=False)
+parser.add_argument("-l","--save_labels", type=bool, help="Boolean variable to choose whether to save a file containing all TImelapse info", default=True)
 parser.add_argument("-t","--save_track", type=bool, help="Boolean variable to choose whether to save a file containing tracked info", default=False)
-parser.add_argument("-r","--save_pred", type=bool, help="Boolean variable to choose whether to save a file containing segmentation", default=True)
+parser.add_argument("-r","--save_pred", type=bool, help="Boolean variable to choose whether to save a file containing segmentation", default=False)
 parser.add_argument("-i","--save_img", type=bool, help="Boolean variable to choose whether to save a file containing the original image", default=False)
 parser.add_argument("-o","--save_overlay", type=bool, help="Boolean variable to choose whether to save a file containing the original image", default=False)
 
