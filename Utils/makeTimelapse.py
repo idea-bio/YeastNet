@@ -12,7 +12,7 @@ from Utils.labelCells import labelCells
 from Utils.Timelapse import Timelapse
 
 
-def makeTimelapse(imagedir, model_path, saveExp):
+def makeTimelapse(imagedir, model_path, saveExp, saveImage=True, saveLabels=True, saveTrack=True, savePred = True, saveOverlay=True):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     tl = Timelapse(device = device, image_dir = imagedir)
 
@@ -26,27 +26,31 @@ def makeTimelapse(imagedir, model_path, saveExp):
     # Make folder if doesnt exist
     if not os.path.isdir(tl.image_dir + 'Results'):
         os.mkdir(tl.image_dir + 'Results')
-    if not os.path.isdir(tl.image_dir+'Results/Tracking'):
+    if saveTrack and not os.path.isdir(tl.image_dir+'Results/Tracking'):
         os.mkdir(tl.image_dir + 'Results/Tracking')
 
     #Save images of predicted masks
-    for idx, mask in enumerate(tl.masks):
-        fn = Timelapse.getFn(tl, idx)
-        imageio.imwrite(tl.image_dir + 'Results/' + fn + 'Pred.png', mask)
+    if savePred:
+        for idx, mask in enumerate(tl.masks):
+            fn = Timelapse.getFn(tl, idx)
+            imageio.imwrite(tl.image_dir + 'Results/' + fn + 'Pred.png', mask)
 
     # Pass Mask into cell labeling script, return labelled cells. Save Images
     for idx, (imageBW, mask) in enumerate(zip(tl.imagesBW, tl.masks)):
         tl.centroids[idx], tl.contouredImages[idx], tl.labels[idx], tl.areas[idx] = labelCells(np.array(mask), np.array(imageBW))
         fn = Timelapse.getFn(tl, idx)
-        im = tl.labels[idx].astype(np.uint16)
+
        # im2 = (65535 * (im - im.min()) / im.ptp()).astype(np.uint16)
         #write_png(tl.image_dir + 'Results/' + fn + 'LabelsLightPNG.png', im2)
-        imageio.imwrite(tl.image_dir + 'Results/' + fn + 'Labels.tiff', im)#to support more than 8bpp pixels
-        imageio.imwrite(tl.image_dir + 'Results/' + fn + 'Overlay.png', (tl.contouredImages[idx] * 255).astype('uint8'))
-        imageio.imwrite(tl.image_dir + 'Results/' + fn + 'BWimage.png', (imageBW * 255).astype('uint8'))
-
+        if saveLabels:
+            im = tl.labels[idx].astype(np.uint16)
+            imageio.imwrite(tl.image_dir + 'Results/' + fn + 'Labels.tiff', im)#to support more than 8bpp pixels
+        if saveOverlay:
+            imageio.imwrite(tl.image_dir + 'Results/' + fn + 'Overlay.png', (tl.contouredImages[idx] * 255).astype('uint8'))
+        if saveImage:
+            imageio.imwrite(tl.image_dir + 'Results/' + fn + 'BWimage.png', (imageBW * 255).astype('uint8'))
     # Only conduct tracking if there is more than one image
-    if tl.num_images > 1:
+    if saveTrack and tl.num_images > 1:
         tl.cellTrack()
         tl.DrawTrackedCells()
 
