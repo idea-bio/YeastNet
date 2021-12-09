@@ -1,4 +1,6 @@
 ## Import Libraries and Modules
+import time
+
 import torch
 import imageio
 import numpy as np
@@ -8,28 +10,40 @@ import pdb
 from Utils.helpers import accuracy
 from ynetmodel.defineNetwork import NetOld
 
-
-def infer(images, num_images, device="cpu", model_path="./model_cp.pt"):
-    ## Instantiate Net, load parameters
+def LoadModel(model_path, device="cpu"):
     net = NetOld()
     net.eval()
     checkpoint = torch.load(model_path, map_location=device)
     net.load_state_dict(checkpoint["network"])
-
     ## Move Net to GPU
     net.to(device)
+    return net
 
+net =  None
+def infer(images, num_images, device="cpu", model_path="./model_cp.pt"):
+    global net
+    st = time.time()
+    took=0
+    if not net:
+        net = LoadModel(model_path,device)
+        took =time.time() - st
+    from Globals import debug
+    if debug:
+        print ("took load model"+str(took))
     ## Inference
     output = [None] * num_images
 
     for idx, image in enumerate(images):
         image = image.to(device)
-
+        st2 = time.time()
         with torch.no_grad():
-            output[idx] = net(image)
-
+            output[idx] = net(image)#this line tooks ~5 seconds
+        l36=time.time() - st2
+        if debug:
+            print("took lin 36-39 "+str(l36))
         image = image.to(torch.device("cpu"))
-
+        if debug:
+            print("took lin 36-39" + str(time.time() - st2-l36))
     return output
 
 

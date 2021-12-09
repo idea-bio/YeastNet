@@ -1,9 +1,12 @@
+import time
+st =time.time()
+
 import numpy as np
 import torch
-import pdb
+#import pdb
 import imageio
 import pickle
-import argparse
+#import argparse
 import os
 import cv2
 #from numpngw import write_png
@@ -13,15 +16,25 @@ from Utils.labelCells import labelCells
 from Utils.Timelapse import Timelapse
 
 
-def makeTimelapse(imagedir, model_path, saveExp, saveImage=True, saveLabels=True, saveTrack=True, savePred = True, saveOverlay=True):
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    tl = Timelapse(device = device, image_dir = imagedir)
+impT=time.time()-st
+print ("took import" +str(impT))
+def makeTimelapse(imagedir, model_path, saveExp, saveImage=False, saveLabels=True, saveTrack=False, savePred = False, saveOverlay=False):
 
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    torchT = time.time() - st-impT
+    tl = Timelapse(device = device, image_dir = imagedir)
+    from Globals import debug
+    if debug:
+        print("took selecting device" +str( torchT))
     # Load image for inference 
     tl.loadImages(normalize = True)
-
+    if debug:
+        print("took load images" + str(time.time()-st-torchT))
     # Pass Image to Inference script, return predicted Mask
+    st2=time.time()
     predictions = infer(images = tl.tensorsBW, num_images = tl.num_images, device = device, model_path = model_path)
+    if debug:
+        print("took load torch" + str(time.time() - st2))
     tl.makeMasks(predictions)
 
     # Make folder if doesnt exist
