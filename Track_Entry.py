@@ -13,3 +13,6 @@ def run(imagedir, modelPath, saveLabels=True, saveImage=False, saveTrack=False, 
     if Plot:
        plotFlTrack(tl)
     return  tl
+    #label=tl.labels[0].astype(np.uint16)
+    #return label.shape, label.flatten()
+    #return  tl
