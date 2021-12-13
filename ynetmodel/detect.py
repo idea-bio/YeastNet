@@ -43,7 +43,7 @@ def infer(images, num_images, device="cpu", model_path="./model_cp.pt"):
             print("took lin 36-39 "+str(l36))
         image = image.to(torch.device("cpu"))
         if debug:
-            print("took lin 36-39" + str(time.time() - st2-l36))
+            print("took move image" + str(time.time() - st2-l36))
     return output
 
 
