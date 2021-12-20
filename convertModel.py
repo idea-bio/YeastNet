@@ -24,7 +24,7 @@ torch.onnx.export(model=script,
                   input_names= ['input'] , output_names=['output'],
                   dynamic_axes={'input':{2:'width',
                                          3:'height'},
-
+                                    #the output 1ts index is always 2 of the  input 1ts but is dynamic becouse of bug
                                   'output':{1:'lables',
                                             2:'width',
                                             3:'height'
