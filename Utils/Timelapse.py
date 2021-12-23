@@ -105,8 +105,9 @@ class Timelapse():
             None, computed values are stored on object
         """
         for idx, mask in enumerate(masks):
-            bgMask = mask.cpu().detach().numpy()[0,0,:,:]
-            cellMask = mask.cpu().detach().numpy()[0,1,:,:]
+            output =mask.cpu().detach().numpy() #get the image into CPU (detach) convert from torch to numpy
+            bgMask = output[0,0,:,:]
+            cellMask = output[0,1,:,:]
             mask = np.zeros(bgMask.shape)
             mask = (cellMask > bgMask) * 1
             mask = mask / mask.max() * 255
@@ -158,7 +159,6 @@ class Timelapse():
         fromt he subsequent frame. The hungarian algorithm matches centroids most likely 
         to belong to the same cell. And identity array is stored indicating the identity of
         every cell in a frame.
-
         """
         self.identity[0] = np.unique(self.labels[0])[1:]
         self.total_cells = len(self.identity[0])

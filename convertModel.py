@@ -3,7 +3,7 @@ import os
 from ynetmodel.detect import LoadModel
 
 
-modelPath = 'C:\code\YeastNet\Model\YeastNet2Param.pt'
+modelPath = '..\Model\YNMODELPARAMS.pt'
 assert os.path.exists(modelPath)
 org = LoadModel(modelPath)
 script = torch.jit.script(org)
@@ -13,7 +13,7 @@ script = torch.jit.script(org)
 #trace.save('model/trace.pt')
 
 dummy_input = torch.randn(1, 1, 1024, 1024)
-folder = "C:\code\YeastNet\Model"
+folder = "C:\Wisoft\dlls\Yeast\Model"
 if not os.path.exists(folder):
     os.mkdir(folder)
 f = os.path.join(folder, "yeast.onnx")
@@ -30,7 +30,7 @@ torch.onnx.export(model=script,
                                             3:'height'
                                             }}
                   )
-
-f = os.path.join(folder, "yeast_org.onnx")
-torch.onnx.export(org,dummy_input,f=f)
 print(f"save file to {f}")
+#f = os.path.join(folder, "yeast_org.onnx")
+#torch.onnx.export(org,dummy_input,f=f)
+#rint(f"save file to {f}")
