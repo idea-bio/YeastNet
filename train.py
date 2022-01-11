@@ -200,7 +200,7 @@ if __name__ == "__main__":
 
     ## Load Settings YAML file
     if os.path.exists("settings.yml"):
-        settings = yaml.load(open("settings.yml", "r"))
+        settings = yaml.load(open("settings.yml", "r"), Loader=yaml.FullLoader)
     train_param = {}
     ## Try loading settings from environment variable
     try:
